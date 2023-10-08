@@ -12,7 +12,7 @@ class AppDelegate
     @mainWindow.title = NSBundle.mainBundle.infoDictionary['CFBundleName']
     @mainWindow.orderFrontRegardless
 
-    bookmark = create_security_bookmark('/Library/RubyMotion/data')
+    bookmark = create_security_bookmark('/Library/RubyMotion')
     if bookmark
       puts 'Creating bookmark was successul'
 

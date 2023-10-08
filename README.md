@@ -1,87 +1,22 @@
 # bookmark-macos #
 
-## Build and Run ###
+RubyMotion project which re-creates an error I'm having with `NSURL.URLByResolvingBookmarkData`.
 
-- `rake build`
-- `rake run`
+## Instruction to recreate
 
-Run `rake -T` to display a list of supported tasks.
+Run the app with `rake`. You will probably get the dialog that says
 
-## Deploying to the App Store ##
+> Do you want the application "bookmark-macos.app" to accept incoming network connections?
 
-To deploy to the App Store, you'll want to use `rake clean
-archive:distribution`. With a valid distribution certificate.
+Click either `Allow` or `Deny`, it shouldn't matter. You will probably see the `Creating bookmark failed`
+in the console.  Quit the app and run it again.
 
-In your `Rakefile`, set the following values:
-
-```ruby
-#This is only an example, you certificate name may be different.
-app.development do
-  app.codesign_certificate = "Mac Developer: xxxxx"
-end
-
-app.release do
-  app.codesign_certificate = "3rd Party Mac Developer Application: xxxxx"
-end
-
-app.codesign_for_development = true
-app.codesign_for_release = true
-```
-
-It's also recommand to use [motion-provisoning](https://github.com/HipByte/motion-provisioning)
-
-## Icons ##
-
-Apple supports both the use of `.icns` and Asset Catalogs for defining icons.
-
-### ICNS ###
-
-Place your icon under `./resources/`, add the following line to `Rakefile`:
+This time you will see the message `Creating bookmark was successful`. You will also see the
+error that happens with `NSURL.URLByResolvingBookmarkData`
 
 ```
-  app.icon = "Icon.icns"
+Objective-C stub for message `URLByResolvingBookmarkData:options:relativeToURL:bookmarkDataIsStale:error:' type `@@:@Q@*^@' not precompiled. Make sure you properly link with the framework or library that defines this message.
 ```
 
-### Asset Catalogs ###
-
-You'll find icon under `./resources/Assets.xcassets`. You can run the following
-script to generate all the icon sizes (once you've specified `1024x1024.png`).
-Keep in mind that your `.png` files _cannot_ contain alpha channels.
-
-Save this following script to `./gen-icons.sh` and run it:
-
-```sh
-set -x
-
-brew install imagemagick
-
-pushd resources/Assets.xcassets/AppIcon.appiconset/
-
-for size in 512 256 128 32 16
-do
-  cp "1024x1024.png" "Icon_${size}x${size}.png"
-  mogrify -resize "$((size))x$((size))" "Icon_${size}x${size}.png"
-
-  cp "1024x1024.png" "Icon_${size}x${size}@2x.png"
-  mogrify -resize "$((size*2))x$((size*2))" "Icon_${size}x${size}@2x.png"
-done
-
-popd
-```
-
-Add following line to `Rakefile`:
-
-```
-  app.info_plist['CFBundleIconName'] = 'AppIcon'
-```
-
-For more information about Asset Catalogs, refer to this link: https://developer.apple.com/library/content/documentation/Xcode/Reference/xcode_ref-Asset_Catalog_Format/
-
-
-## Contributing ##
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+This only started happening when running on Sonoma, and is occurring out in the field.  I have not seen this
+problem with 13.x and below.

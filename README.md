@@ -18,5 +18,8 @@ error that happens with `NSURL.URLByResolvingBookmarkData`
 Objective-C stub for message `URLByResolvingBookmarkData:options:relativeToURL:bookmarkDataIsStale:error:' type `@@:@Q@*^@' not precompiled. Make sure you properly link with the framework or library that defines this message.
 ```
 
-This only started happening when running on Sonoma, and is occurring out in the field.  I have not seen this
+This only started happening when running on Sonoma on Intel (don't know about Apple Silicon), and is occurring out in the field.  I have not seen this
 problem with 13.x and below.
+
+Problem happens for code compiled with RM 8.x or RM 9beta, targeting either 13.x or 14.0 OSX SDKs
+
